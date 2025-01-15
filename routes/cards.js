@@ -1,23 +1,21 @@
-const router = require('express').Router();
-const fs = require('fs');
-const path = require('path');
-
-let cards = [];
-
-// Define o caminho absoluto para o arquivo JSON
-console.log(__dirname);
-
-const cardFilePath = path.join(__dirname, '..', 'data', 'cards.json');
-
-// Lê o arquivo JSON de forma síncrona ao iniciar
-try {
-  const data = fs.readFileSync(cardFilePath, 'utf8');
-  cards = JSON.parse(data);
-} catch (err) {
-  console.error('Erro ao carregar o arquivo JSON:', err);
-}
+const router = require("express").Router();
+const {
+  getCards,
+  createCards,
+  deleteCardById,
+  likeCard,
+  dislikeCard,
+} = require("../controllers/cards");
 
 // Rota para buscar todos os cards
-router.get('/', (_req, res) => res.status(200).send(cards));
+router.get("/", getCards);
+
+router.post("/", createCards);
+
+router.delete("/:cardId", deleteCardById);
+
+router.put("/:cardId/likes", likeCard);
+
+router.delete("/:cardId/likes", dislikeCard);
 
 module.exports = router;
