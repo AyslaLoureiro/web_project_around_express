@@ -1,33 +1,22 @@
-const router = require('express').Router();
-const fs = require('fs');
-const path = require('path');
-
-let users = [];
-
-const usersFilePath = path.join(__dirname, '..', 'data', 'users.json');
-// Lê o arquivo JSON de forma síncrona ao iniciar
-try {
-  const data = fs.readFileSync(usersFilePath, 'utf8');
-  users = JSON.parse(data);
-} catch (err) {
-  console.error('Erro ao carregar o arquivo JSON:', err);
-}
+const router = require("express").Router();
+const {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUserProfile,
+  updateUserAvatar,
+} = require("../controllers/users.js");
 
 // Rota para buscar todos os usuários
-router.get('/', (_req, res) => res.status(200).send(users));
+router.get("/", getUsers);
 
 // Rota para obter usuário pelo ID
-router.get('/:id', (req, res) => {
-  const { id } = req.params;
+router.get("/:id", getUserById);
 
-  // Encontra o usuário com o ID fornecido
-  const user = users.find((u) => u._id === id);
+router.post("/", createUser);
 
-  if (user) {
-    return res.send(user);
-  }
+router.patch("/", updateUserProfile);
 
-  return res.status(404).json({ error: 'ID do usuário não encontrado' });
-});
+router.put("/", updateUserAvatar);
 
 module.exports = router;
