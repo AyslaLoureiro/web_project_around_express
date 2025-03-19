@@ -17,14 +17,6 @@ app.use(express.json());
 
 mongoose.connect("mongodb://localhost:27017/aroundb");
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: "6787f327b7cab77bd1597272", // cole o _id do usuário teste criado no passo anterior
-  };
-
-  next();
-});
-
 // Rota de teste
 app.get("/", (req, res) => {
   res.json({ message: "Server is running!" });
